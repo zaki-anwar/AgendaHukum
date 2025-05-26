@@ -2,7 +2,7 @@
 $server = "localhost";
 $username = "root";
 $password = "";
-$database = "agendahukum";
+$database = "agenda_hukum";
 
 $conn = mysqli_connect($server, $username, $password, $database);
 

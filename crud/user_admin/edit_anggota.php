@@ -1,9 +1,9 @@
 <?php
-include "../config/db.php";
+include "../../config/db.php";
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 
@@ -18,14 +18,14 @@ if (isset($_GET['edit_admin'])) {
         $_SESSION['message'] = "Data tidak ditemukan.";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "edit_admin";
-        header("Location: jumlah_admin.php");
+        header("Location: ../../user_admin/jumlah_anggota.php");
         exit();
     }
 } else {
     $_SESSION['message'] = "ID tidak valid.";
     $_SESSION['message_type'] = "danger";
     $_SESSION['message_section'] = "edit_admin";
-    header("Location: jumlah_admin.php");
+    header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 }
 
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
     }
 
     $_SESSION['message_section'] = "edit_admin";
-    header("Location: ../user_admin/jumlah_admin.php");
+    header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 }
 ?>
@@ -64,9 +64,9 @@ if (isset($_POST['submit'])) {
   <title>Edit Anggota</title>
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
   <header id="header" class="header fixed-top d-flex align-items-center">
@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
-          <a class="dropdown-item d-flex align-items-center" href="../auth/logout.php">
+          <a class="dropdown-item d-flex align-items-center" href="../../auth/logout.php">
             <i class="bi bi-box-arrow-right"></i>
           </a>
         </li>
@@ -86,26 +86,26 @@ if (isset($_POST['submit'])) {
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/index.php">
+        <a class="nav-link collapsed" href="../../user_admin/index.php">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/perkara.php">
+        <a class="nav-link collapsed" href="../../user_admin/perkara.php">
           <i class="bi bi-journal-text"></i>
           <span>Data Perkara</span>
         </a>
       </li> 
       <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/profil.php">
+        <a class="nav-link collapsed" href="../../user_admin/profil.php">
           <i class="bi bi-person-circle"></i>
           <span>Profil</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../user_admin/jumlah_admin.php">
+        <a class="nav-link" href="../../user_admin/jumlah_admin.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
         </a>
@@ -118,8 +118,8 @@ if (isset($_POST['submit'])) {
       <h1>Edit Anggota</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="../user_admin/index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="../user_admin/jumlah_admin.php">Anggota Tim</a></li>
+          <li class="breadcrumb-item"><a href="../../user_admin/index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="../../user_admin/jumlah_anggota.php">Anggota Tim</a></li>
           <li class="breadcrumb-item active">Edit Anggota</li>
         </ol>
       </nav>
@@ -167,7 +167,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary" type="submit" name="submit">Perbarui</button>
-                        <a href="../user_admin/jumlah_admin.php" class="btn btn-secondary">Kembali</a>
+                        <a href="../../user_admin/jumlah_anggota.php" class="btn btn-secondary">Kembali</a>
                     </div>
                 </form>
             </div>
@@ -185,7 +185,7 @@ if (isset($_POST['submit'])) {
     </div>
   </footer>
 
-  <script src="../assets/js/main.js"></script>
+  <script src="../../assets/js/main.js"></script>
   <script>
     setTimeout(function() {
         let alertBox = document.getElementById("alertMessage");

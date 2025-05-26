@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="card-body">
               <h5 class="card-title text-center pb-0 fs-4">Tambah Anggota</h5>
               <p class="text-center">Masukkan data yang diperlukan</p>
-              <form action="register.php" method="POST" class="row g-3 needs-validation" novalidate>
+              <form action="tambah_anggota.php" method="POST" class="row g-3 needs-validation" novalidate>
                 <div class="col-12">
                   <label for="nama" class="form-label">Nama</label>
                   <input type="text" name="nama" class="form-control" id="nama" required>
