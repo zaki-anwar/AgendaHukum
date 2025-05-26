@@ -1,14 +1,13 @@
 <?php
-include "../config/db.php";
+include "../../config/db.php";
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Mengambil data dari form dengan field 'nama', bukan 'nama_admin'
     $nama = isset($_POST['nama']) ? mysqli_real_escape_string($conn, $_POST['nama']) : '';
     $username = isset($_POST['username']) ? mysqli_real_escape_string($conn, $_POST['username']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
-    $status = isset($_POST['status']) ? $_POST['status'] : 'user'; // default ke user jika tidak ada
+    $status = isset($_POST['status']) ? $_POST['status'] : 'user'; 
 
     if (empty($nama) || empty($username) || empty($password) || empty($confirm_password)) {
         $_SESSION['message'] = "<div class='text-center'>Semua field wajib diisi!</div>";
@@ -40,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['message'] = "<div class='text-center'>$nama berhasil ditambah sebagai $status!</div>";
                 $_SESSION['message_type'] = "success";
                 $_SESSION['message_section'] = "tambah_admin";
-                header("Location: ../user_admin/jumlah_admin.php");
+                header("Location: ../../user_admin/jumlah_anggota.php");
                 exit();
             } else {
                 $_SESSION['message'] = "<div class='text-center'>Terjadi kesalahan saat menambah!</div>";
@@ -60,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Tambah Admin</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
   <header id="header" class="header fixed-top d-flex align-items-center">
@@ -72,26 +71,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/index.php">
+        <a class="nav-link collapsed" href="../../user_admin/index.php">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/perkara.php">
+        <a class="nav-link collapsed" href="../../user_admin/perkara.php">
           <i class="bi bi-journal-text"></i>
           <span>Data Perkara</span>
         </a>
       </li> 
       <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/profil.php">
+        <a class="nav-link collapsed" href="../../user_admin/profil.php">
           <i class="bi bi-person-circle"></i>
           <span>Profil</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../user_admin/jumlah_admin.php">
+        <a class="nav-link" href="../../user_admin/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
         </a>
@@ -104,8 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <h1>Tambah Anggota</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="../user_admin/index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="../user_admin/jumlah_admin.php">Jumlah Anggota</a></li>
+          <li class="breadcrumb-item"><a href="../../user_admin/index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="../../user_admin/jumlah_admin.php">Jumlah Anggota</a></li>
           <li class="breadcrumb-item active">Tambah Anggota</li>
         </ol>
       </nav>
@@ -127,7 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           }
           ?>
 
-          <!-- tabel daftar Perkara -->
           <div class="card">
             <div class="card-body">
               <h5 class="card-title text-center pb-0 fs-4">Tambah Anggota</h5>
@@ -179,8 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   </select>
                 </div>
                 <div class="col-12">
-                  <button class="btn btn-primary w-100" type="submit">Tambah Admin</button><br><br>
-                    <a href="../user_admin/jumlah_admin.php" class="btn btn-secondary w-100" type="submit">Kembali</a>
+                  <button class="btn btn-primary w-100" type="submit">Tambah Anggota</button><br><br>
+                    <a href="../../user_admin/jumlah_anggota.php" class="btn btn-secondary w-100" type="submit">Kembali</a>
                 </div>
               </form>
             </div>
@@ -197,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
   </footer>
 
-  <script src="../assets/js/main.js"></script>
+  <script src="../../assets/js/main.js"></script>
   <script>
     setTimeout(function() {
         let alertBox = document.getElementById("alertMessage");

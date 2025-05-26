@@ -57,7 +57,7 @@ if (!isset($_SESSION['username'])) {
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="jumlah_admin.php">
+        <a class="nav-link" href="jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
         </a>
@@ -141,7 +141,7 @@ if (!isset($_SESSION['username'])) {
                             echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['no_telp']) . "</td>";
                             echo "<td>
-                                    <a href='../crud/edit_admin.php?edit_admin=" . $row['id'] . "' class='text-primary me-3'>
+                                    <a href='../crud/user_admin/edit_anggota.php?edit_admin=" . $row['id'] . "' class='text-primary me-3'>
                                       <i class='bi bi-pencil-square'></i>
                                     </a>
                                     <a href='../crud/hapus_admin.php?hapus_admin=" . $row['id'] . "' class='text-danger' onclick='return confirm(\"Apakah Anda yakin ingin menghapus admin ini?\")'>

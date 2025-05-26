@@ -57,7 +57,7 @@ if (!isset($_SESSION['username'])) {
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="jumlah_admin.php">
+        <a class="nav-link" href="jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
         </a>
