@@ -21,14 +21,11 @@ if (!$data) {
     header("Location: ../../index.php");
     exit();
 }
-
-// Proses simpan perubahan
 if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $username = htmlspecialchars($_POST['username']);
     $password = $_POST['password'];
 
-    // Cek apakah username sudah digunakan oleh user lain
     $cekUsername = "SELECT id FROM user WHERE username = '$username' AND id != $id";
     $cekResult = mysqli_query($conn, $cekUsername);
 
@@ -40,7 +37,6 @@ if (isset($_POST['submit'])) {
         exit();
     }
 
-    // Proses upload foto jika ada
     $fotoBaru = '';
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
         $fotoName = basename($_FILES['foto']['name']);
@@ -52,7 +48,6 @@ if (isset($_POST['submit'])) {
             $fotoBaru = uniqid() . '.' . $fotoExt;
             $uploadPath = "../../assets/img/" . $fotoBaru;
             if (move_uploaded_file($fotoTmp, $uploadPath)) {
-                // Hapus foto lama jika ada
                 if (!empty($data['foto']) && file_exists("../../assets/img/" . $data['foto'])) {
                     unlink("../../assets/img/" . $data['foto']);
                 }
@@ -72,7 +67,6 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    // Update data
     $sql = "UPDATE user SET nama = '$nama', username = '$username'";
     if (!empty($password)) {
         $hashed = password_hash($password, PASSWORD_DEFAULT);
@@ -170,13 +164,11 @@ if (isset($_POST['submit'])) {
         <div class="col-lg-12">
 
           <?php
-          if (isset($_SESSION['message']) && $_SESSION['message_section'] == 'edit_profil') {
-              echo "<div id='alertMessage' class='alert alert-{$_SESSION['message_type']} alert-dismissible fade show' role='alert'>
-                      {$_SESSION['message']}
-                      <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>";
-              unset($_SESSION['message'], $_SESSION['message_type'], $_SESSION['message_section']);
-          }
+          if (isset($_SESSION['message'])) {
+              echo "<div  id='alertMessage' class='alert alert-{$_SESSION['message_type']}'>" . $_SESSION['message'] . "</div>";
+              unset($_SESSION['message']);
+              unset($_SESSION['message_type']);
+            }
           ?>
 
           <div class="card">
@@ -220,8 +212,8 @@ if (isset($_POST['submit'])) {
 
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

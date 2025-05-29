@@ -24,6 +24,7 @@ if ($result && $result->num_rows > 0) {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Dashboard</title>
+
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -105,7 +106,7 @@ if ($result && $result->num_rows > 0) {
   
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Data Perkara</h5>
+          <h5 class="card-title text-center pb-2 fs-4">Data Perkara</h5>
           <div class="row">
             <?php if (!empty($data_perkara) && is_array($data_perkara)) : ?>
             <?php foreach ($data_perkara as $perkara) : ?>
@@ -132,14 +133,14 @@ if ($result && $result->num_rows > 0) {
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Sidang Terdekat</h5>
+        <h5 class="card-title text-center pb-2 fs-4">Sidang Terdekat</h5>
         <?php
           $query = "SELECT p.id_perkara, p.nama_perkara, dp.id_data, dp.no_perkara, dp.nama_klien, dp.jadwal_sidang, dp.peradilan, dp.keterangan
                     FROM perkara p
                     LEFT JOIN data_perkara dp ON p.id_perkara = dp.id_perkara
                     WHERE dp.jadwal_sidang >= CURDATE()
                     ORDER BY dp.jadwal_sidang ASC
-                    LIMIT 1";  
+                    LIMIT 3";  
           $result = mysqli_query($conn, $query);
         if (mysqli_num_rows($result) > 0) {
             $current_perkara = null;
@@ -154,7 +155,7 @@ if ($result && $result->num_rows > 0) {
 
               echo "<div class='card mb-4'>";
               echo "<div class='card-body'>";
-              echo "<h5 class='card-title'>" . htmlspecialchars($current_perkara, ENT_QUOTES, 'UTF-8') . "</h5>";
+              echo "<h5 class='card-title pb-2 fs-4'>" . htmlspecialchars($current_perkara, ENT_QUOTES, 'UTF-8') . "</h5>";
               echo "<div class='table-responsive'>";
               echo "<table class='table table-bordered'>
                     <thead>
@@ -191,8 +192,8 @@ if ($result && $result->num_rows > 0) {
 
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>.
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
   

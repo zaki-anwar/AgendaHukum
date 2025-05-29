@@ -190,8 +190,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>.
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
 

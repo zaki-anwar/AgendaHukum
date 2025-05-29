@@ -140,7 +140,7 @@ if ($result && $result->num_rows > 0) {
                     LEFT JOIN data_perkara dp ON p.id_perkara = dp.id_perkara
                     WHERE dp.jadwal_sidang >= CURDATE()
                     ORDER BY dp.jadwal_sidang ASC
-                    LIMIT 1";  
+                    LIMIT 3";  
           $result = mysqli_query($conn, $query);
         if (mysqli_num_rows($result) > 0) {
             $current_perkara = null;
@@ -192,8 +192,8 @@ if ($result && $result->num_rows > 0) {
 
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>.
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
   

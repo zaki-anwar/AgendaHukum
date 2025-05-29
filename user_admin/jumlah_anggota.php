@@ -79,7 +79,18 @@ if (!isset($_SESSION['username'])) {
       <div class="row">
         <div class="col-lg-12">
           <?php
-          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'tambah_admin') {
+          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'tambah_anggota') {
+            $message = $_SESSION['message'];
+            $message_type = $_SESSION['message_type'];
+            echo "<div id='alertMessage' class='alert alert-$message_type alert-dismissible fade show' role='alert'>
+                    $message
+                  </div>";
+        
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+            unset($_SESSION['message_section']);
+          }
+          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'edit_anggota') {
             $message = $_SESSION['message'];
             $message_type = $_SESSION['message_type'];
             echo "<div id='alertMessage' class='alert alert-$message_type alert-dismissible fade show' role='alert'>
@@ -92,7 +103,7 @@ if (!isset($_SESSION['username'])) {
           }
           ?>
           <?php
-          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'hapus_admin') {
+          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'hapus_anggota') {
             $message = $_SESSION['message'];
             $message_type = $_SESSION['message_type'];
             echo "<div id='alertMessage' class='alert alert-$message_type alert-dismissible fade show' role='alert'>
@@ -141,10 +152,10 @@ if (!isset($_SESSION['username'])) {
                             echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['no_telp']) . "</td>";
                             echo "<td>
-                                    <a href='../crud/user_admin/edit_anggota.php?edit_admin=" . $row['id'] . "' class='text-primary me-3'>
+                                    <a href='../crud/user_admin/edit_anggota.php?edit_anggota=" . $row['id'] . "' class='text-primary me-3'>
                                       <i class='bi bi-pencil-square'></i>
                                     </a>
-                                    <a href='../crud/hapus_admin.php?hapus_admin=" . $row['id'] . "' class='text-danger' onclick='return confirm(\"Apakah Anda yakin ingin menghapus admin ini?\")'>
+                                    <a href='../crud/user_admin/hapus_anggota.php?hapus_anggota=" . $row['id'] . "' class='text-danger' onclick='return confirm(\"Apakah Anda yakin ingin menghapus admin ini?\")'>
                                       <i class='bi bi-trash-fill'></i>
                                     </a>
                                   </td>";
@@ -166,8 +177,8 @@ if (!isset($_SESSION['username'])) {
 
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>.
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
 

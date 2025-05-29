@@ -8,69 +8,90 @@ if (!isset($_SESSION['username'])) {
 }
 
 if (isset($_GET['id_data'])) {
-  $id_data = $_GET['id_data'];
+    $id_data = $_GET['id_data'];
 
-  if (!filter_var($id_data, FILTER_VALIDATE_INT)) {
-    $_SESSION['message'] = "ID data perkara tidak valid.";
-    $_SESSION['message_type'] = "danger";
-    header("Location: ../../user_admin/perkara.php");
-    exit();
-  }
+    if (!filter_var($id_data, FILTER_VALIDATE_INT)) {
+        $_SESSION['message'] = "ID data perkara tidak valid.";
+        $_SESSION['message_type'] = "danger";
+        header("Location: ../../user_admin/perkara.php");
+        exit();
+    }
 
-  $query = "SELECT dp.*, p.nama_perkara 
-            FROM data_perkara dp
-            JOIN perkara p ON dp.id_perkara = p.id_perkara
-            WHERE dp.id_data = ?";
-  $stmt = $conn->prepare($query);
-  $stmt->bind_param("i", $id_data);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    $query = "SELECT dp.*, p.nama_perkara 
+              FROM data_perkara dp
+              JOIN perkara p ON dp.id_perkara = p.id_perkara
+              WHERE dp.id_data = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_data);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-  if ($result->num_rows == 0) {
-    $_SESSION['message'] = "Data perkara tidak ditemukan.";
-    $_SESSION['message_type'] = "danger";
-    header("Location: ../../user_admin/perkara.php");
-    exit();
-  }
+    if ($result->num_rows == 0) {
+        $_SESSION['message'] = "Data perkara tidak ditemukan.";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "data_perkara";
+        header("Location: ../../user_admin/perkara.php");
+        exit();
+    }
+
     $data_perkara = $result->fetch_assoc();
-
 } else {
-  $_SESSION['message'] = "ID data perkara tidak ditemukan.";
-  $_SESSION['message_type'] = "danger";
-  header("Location: ../../user_admin/perkara.php");
-  exit();
+    $_SESSION['message'] = "ID data perkara tidak ditemukan.";
+    $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "data_perkara";
+    header("Location: ../../user_admin/perkara.php");
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $no_perkara = $_POST['no_perkara'];
-  $nama_klien = $_POST['nama_klien'];
-  $jadwal_sidang = $_POST['jadwal_sidang'];
-  $peradilan = $_POST['peradilan']?: '-';
-  $keterangan = $_POST['keterangan']?: '-';
+    $no_perkara = $_POST['no_perkara'];
+    $nama_klien = $_POST['nama_klien'];
+    $jadwal_sidang = $_POST['jadwal_sidang'];
+    $peradilan = $_POST['peradilan'] ?: '-';
+    $keterangan = $_POST['keterangan'] ?: '-';
 
     if (empty($no_perkara) || empty($nama_klien)) {
-      $_SESSION['message'] = "Nomor perkara dan nama klien harus diisi.";
-      $_SESSION['message_type'] = "danger";
-      header("Location: edit_dataperkara.php?id_data=" . $id_data);
-      exit();
+        $_SESSION['message'] = "Nomor perkara dan nama klien harus diisi.";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "data_perkara";
+        header("Location: edit_dataperkara.php?id_data=" . $id_data);
+        exit();
     }
 
-    $update_query = "UPDATE data_perkara SET no_perkara = ?, nama_klien = ?, jadwal_sidang = ?, peradilan = ?, keterangan = ? WHERE id_data = ?";
+    // Cek apakah nomor perkara sudah digunakan oleh data lain
+    $cek_query = "SELECT id_data FROM data_perkara WHERE no_perkara = ? AND id_data != ?";
+    $cek_stmt = $conn->prepare($cek_query);
+    $cek_stmt->bind_param("si", $no_perkara, $id_data);
+    $cek_stmt->execute();
+    $cek_result = $cek_stmt->get_result();
+
+    if ($cek_result->num_rows > 0) {
+        $_SESSION['message'] = "Nomor perkara sudah digunakan oleh data lain.";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "data_perkara";
+        header("Location: edit_dataperkara.php?id_data=" . $id_data);
+        exit();
+    }
+
+    // Proses update
+    $update_query = "UPDATE data_perkara 
+                     SET no_perkara = ?, nama_klien = ?, jadwal_sidang = ?, peradilan = ?, keterangan = ? 
+                     WHERE id_data = ?";
     $stmt = $conn->prepare($update_query);
     $stmt->bind_param("sssssi", $no_perkara, $nama_klien, $jadwal_sidang, $peradilan, $keterangan, $id_data);
 
     if ($stmt->execute()) {
-      $_SESSION['message'] = "Data perkara berhasil diperbarui.";
-      $_SESSION['message_type'] = "success";
-      $_SESSION['message_section'] = "data_perkara";
-      header("Location: ../../user_admin/perkara.php");
-      exit();
+        $_SESSION['message'] = "Data perkara berhasil diperbarui.";
+        $_SESSION['message_type'] = "success";
+        $_SESSION['message_section'] = "data_perkara";
+        header("Location: ../../user_admin/perkara.php");
+        exit();
     } else {
-      $_SESSION['message'] = "Terjadi kesalahan saat memperbarui data perkara.";
-      $_SESSION['message_type'] = "danger";
-      $_SESSION['message_section'] = "data_perkara";
-      header("Location: edit_dataperkara.php?id_data=" . $id_data);
-      exit();
+        $_SESSION['message'] = "Terjadi kesalahan saat memperbarui data perkara.";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "data_perkara";
+        header("Location: edit_dataperkara.php?id_data=" . $id_data);
+        exit();
     }
 }
 ?>
@@ -147,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="col-lg-12">
           <?php
             if (isset($_SESSION['message'])) {
-              echo "<div class='{$_SESSION['message_type']}'>" . $_SESSION['message'] . "</div>";
+              echo "<div  id='alertMessage' class='alert alert-{$_SESSION['message_type']}'>" . $_SESSION['message'] . "</div>";
               unset($_SESSION['message']);
               unset($_SESSION['message_type']);
             }
@@ -195,6 +216,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </footer>
 
   <script src="../../assets/js/main.js"></script>
+  <script>
+    setTimeout(function() {
+        let alertBox = document.getElementById("alertMessage");
+        if (alertBox) {
+            alertBox.style.transition = "opacity 0.5s";
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 300);
+        }
+    }, 3000);
+  </script>
 </body>
 </html>
 

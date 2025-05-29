@@ -89,13 +89,11 @@ if (!$profil) {
   </div>
 
   <?php
-    if (isset($_SESSION['message']) && $_SESSION['message_section'] == 'profil') {
-        echo "<div id='alertMessage' class='alert alert-{$_SESSION['message_type']} alert-dismissible fade show' role='alert'>
-                " . htmlspecialchars($_SESSION['message']) . "
-                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>";
-        unset($_SESSION['message'], $_SESSION['message_type'], $_SESSION['message_section']);
-    }
+    if (isset($_SESSION['message'])) {
+              echo "<div  id='alertMessage' class='alert alert-{$_SESSION['message_type']}'>" . $_SESSION['message'] . "</div>";
+              unset($_SESSION['message']);
+              unset($_SESSION['message_type']);
+            }
   ?>
 
   <section class="section">

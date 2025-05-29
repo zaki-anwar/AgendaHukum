@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_cek->store_result();
 
     if ($stmt_cek->num_rows > 0) {
-        $_SESSION['message'] = "'$nama_perkara' sudah ada.";
+        $_SESSION['message'] = "$nama_perkara sudah ada.";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "perkara";
         header("Location: tambah_perkara.php");
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("s", $nama_perkara);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Perkara berhasil ditambahkan!";
+        $_SESSION['message'] = "$nama_perkara berhasil ditambahkan!";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "perkara";
     } else {
-        $_SESSION['message'] = "Gagal menambahkan perkara: " . $stmt->error;
+        $_SESSION['message'] = "Gagal menambahkan perkara:$nama_perkara " . $stmt->error;
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "perkara";
     }

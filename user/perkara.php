@@ -56,9 +56,9 @@ if (!isset($_SESSION['username'])) {
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="jumlah_admin.php">
+        <a class="nav-link collapsed" href="jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
-          <span>Angota Tim</span>
+          <span>Anggota Tim</span>
         </a>
       </li>
     </ul>
@@ -211,8 +211,8 @@ if (!isset($_SESSION['username'])) {
 
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>.
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
 

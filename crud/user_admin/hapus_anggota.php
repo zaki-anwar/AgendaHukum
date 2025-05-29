@@ -1,15 +1,15 @@
 <?php
-include "../config/db.php";
+include "../../config/db.php";
 session_start();
 
-if (isset($_GET['hapus_admin'])) {
-    $id = $_GET['hapus_admin'];
+if (isset($_GET['hapus_anggota'])) {
+    $id = $_GET['hapus_anggota'];
 
     if (!filter_var($id, FILTER_VALIDATE_INT)) {
         $_SESSION['message'] = "ID anggota perkara tidak valid.";
         $_SESSION['message_type'] = "danger";
-        $_SESSION['message_section'] = "hapus_admin";
-        header("Location: ../user_admin/jumlah_admin.php");
+        $_SESSION['message_section'] = "hapus_anggota";
+        header("Location: ../../user_admin/jumlah_anggota.php");
         exit();
     }
 
@@ -25,7 +25,7 @@ if (isset($_GET['hapus_admin'])) {
         $_SESSION['message'] = "Data anggota tidak ditemukan.";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "tambah_admin";
-        header("Location: ../user_admin/jumlah_admin.php");
+        header("Location: ../../user_admin/jumlah_anggota.php");
         exit();
     }
 
@@ -36,20 +36,20 @@ if (isset($_GET['hapus_admin'])) {
     if ($stmt->execute()) {
         $_SESSION['message'] = "Anggota berhasil dihapus.";
         $_SESSION['message_type'] = "success";
-        $_SESSION['message_section'] = "hapus_admin";
+        $_SESSION['message_section'] = "hapus_anggota";
     } else {
-        $_SESSION['message'] = "Terjadi kesalahan saat menghapus admin.";
+        $_SESSION['message'] = "Terjadi kesalahan saat menghapus anggota.";
         $_SESSION['message_type'] = "danger";
-        $_SESSION['message_section'] = "hapus_admin";
+        $_SESSION['message_section'] = "hapus_anggota";
     }
     $stmt->close();
-    header("Location: ../user_admin/jumlah_admin.php");
+    header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 } else {
     $_SESSION['message'] = "ID anggota tidak ditemukan.";
     $_SESSION['message_type'] = "danger";
-    $_SESSION['message_section'] = "hapus_admin";
-    header("Location: ../user_admin/jumlah_admin.php");
+    $_SESSION['message_section'] = "hapus_anggota";
+    header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 }
 ?>

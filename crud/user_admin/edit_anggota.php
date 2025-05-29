@@ -8,23 +8,23 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Ambil data user berdasarkan ID dari URL
-if (isset($_GET['edit_admin'])) {
-    $id = $_GET['edit_admin'];
+if (isset($_GET['edit_anggota'])) {
+    $id = $_GET['edit_anggota'];
     $query = "SELECT * FROM user WHERE id = $id";
     $result = mysqli_query($conn, $query);
     $data = mysqli_fetch_assoc($result);
 
     if (!$data) {
-        $_SESSION['message'] = "Data tidak ditemukan.";
+        $_SESSION['message'] = "Data anggota tidak ditemukan.";
         $_SESSION['message_type'] = "danger";
-        $_SESSION['message_section'] = "edit_admin";
+        $_SESSION['message_section'] = "edit_anggota";
         header("Location: ../../user_admin/jumlah_anggota.php");
         exit();
     }
 } else {
-    $_SESSION['message'] = "ID tidak valid.";
+    $_SESSION['message'] = "ID anggota tidak valid.";
     $_SESSION['message_type'] = "danger";
-    $_SESSION['message_section'] = "edit_admin";
+    $_SESSION['message_section'] = "edit_anggota";
     header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 }
@@ -43,14 +43,14 @@ if (isset($_POST['submit'])) {
     }
 
     if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "Data berhasil diperbarui.";
+        $_SESSION['message'] = "Data anggota berhasil diperbarui.";
         $_SESSION['message_type'] = "success";
     } else {
-        $_SESSION['message'] = "Gagal memperbarui data.";
+        $_SESSION['message'] = "Data anggota gagal diperbarui.";
         $_SESSION['message_type'] = "danger";
     }
 
-    $_SESSION['message_section'] = "edit_admin";
+    $_SESSION['message_section'] = "edit_anggota";
     header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 }
@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
         <div class="col-lg-12">
           
           <?php
-            if (isset($_SESSION['message']) && $_SESSION['message_section'] == 'perkara') {
+            if (isset($_SESSION['message']) && $_SESSION['message_section'] == 'edit_anggota') {
               $message = $_SESSION['message'];
               $message_type = $_SESSION['message_type'];
 
@@ -180,8 +180,8 @@ if (isset($_POST['submit'])) {
 
   <footer id="footer" class="footer">
     <div class="copyright">
-      <strong><span>JadwalSidang</span></strong>.
-      <p class="small">by Zaki_Anwar</p>
+      <strong><span>AgendaHukum</span></strong>
+      <p class="small">by Kelompok_8</p>
     </div>
   </footer>
 
