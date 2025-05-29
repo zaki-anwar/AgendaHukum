@@ -9,8 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || !isset(
 
 $id_user = $_SESSION['id_user'];
 
-// Ambil data user termasuk foto
-$stmt = $conn->prepare("SELECT username, nama, status, foto FROM user WHERE id = ?");
+$stmt = $conn->prepare("SELECT username, nama, status, foto, email, no_telp FROM user WHERE id = ?");
 $stmt->bind_param("i", $id_user);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -123,6 +122,14 @@ if (!$profil) {
               <div class="mb-3">
                 <label class="form-label"><strong>Status</strong></label>
                 <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($profil['status']) ?>" readonly>
+              </div>
+               <div class="mb-3">
+                <label class="form-label"><strong>Email</strong></label>
+                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($profil['email']) ?>" readonly>
+              </div>
+              <div class="mb-3">
+                <label class="form-label"><strong>No. Telp</strong></label>
+                <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($profil['no_telp']) ?>" readonly>
               </div>
               <div class="d-grid gap-2 mt-3">
                 <a href="../crud/user_admin/edit_profil.php" class="btn btn-primary">Edit Profil</a>

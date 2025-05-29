@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../../user_admin/jumlah_admin.php">
+        <a class="nav-link" href="../../user_admin/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
         </a>
@@ -151,11 +151,25 @@ if (isset($_POST['submit'])) {
                         <label class="form-label">Nama</label>
                         <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($data['nama']) ?>" required>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Password Baru</label>
-                        <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
-                    </div>
+  
+                <div class="col-12">
+                  <label for="password" class="form-label">Kata Sandi</label>
+                  <div class="input-group">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Kosongkan jika tidak ingin mengubah">
+                    <button type="button" class="btn btn-outline-secondary togglePassword" data-target="password">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label for="confirm_password" class="form-label">Konfirmasi Kata Sandi</label>
+                  <div class="input-group">
+                    <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Kosongkan jika tidak ingin mengubah">
+                    <button type="button" class="btn btn-outline-secondary togglePassword" data-target="confirm_password">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  </div>
+                </div>
 
                     <div class="mb-3">
                         <label class="form-label">Status</label>
@@ -195,6 +209,25 @@ if (isset($_POST['submit'])) {
             setTimeout(() => alertBox.remove(), 300);
         }
     }, 3000);
+</script>
+<script>
+    document.querySelectorAll('.togglePassword').forEach(button => {
+        button.addEventListener('click', function () {
+            let targetId = this.getAttribute('data-target');
+            let passwordField = document.getElementById(targetId);
+            let icon = this.querySelector('i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
 </script>
 
 </body>

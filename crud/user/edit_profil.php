@@ -1,9 +1,9 @@
 <?php
-include "../config/db.php";
+include "../../config/db.php";
 session_start();
 
 if (!isset($_SESSION['username']) || !isset($_SESSION['id_user'])) {
-    header("Location: ../auth/login.php");
+    header("Location: ../../auth/login.php");
     exit();
 }
 
@@ -22,13 +22,14 @@ if (!$data) {
     exit();
 }
 
-// Proses simpan perubahan
 if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $username = htmlspecialchars($_POST['username']);
     $password = $_POST['password'];
+    $email = htmlspecialchars($_POST['email']);
+    $no_telp = htmlspecialchars($_POST['no_telp']);
 
-    // Cek apakah username sudah digunakan oleh user lain
+
     $cekUsername = "SELECT id FROM user WHERE username = '$username' AND id != $id";
     $cekResult = mysqli_query($conn, $cekUsername);
 
@@ -50,11 +51,11 @@ if (isset($_POST['submit'])) {
 
         if (in_array(strtolower($fotoExt), $allowed)) {
             $fotoBaru = uniqid() . '.' . $fotoExt;
-            $uploadPath = "../assets/img/" . $fotoBaru;
+            $uploadPath = "../../assets/img/" . $fotoBaru;
             if (move_uploaded_file($fotoTmp, $uploadPath)) {
                 // Hapus foto lama jika ada
-                if (!empty($data['foto']) && file_exists("../assets/img/" . $data['foto'])) {
-                    unlink("../assets/img/" . $data['foto']);
+                if (!empty($data['foto']) && file_exists("../../assets/img/" . $data['foto'])) {
+                    unlink("../../assets/img/" . $data['foto']);
                 }
             } else {
                 $_SESSION['message'] = "Gagal mengupload foto.";
@@ -73,7 +74,7 @@ if (isset($_POST['submit'])) {
     }
 
     // Update data
-    $sql = "UPDATE user SET nama = '$nama', username = '$username'";
+   $sql = "UPDATE user SET nama = '$nama', username = '$username', email = '$email', no_telp = '$no_telp'";
     if (!empty($password)) {
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $sql .= ", password = '$hashed'";
@@ -87,7 +88,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['message'] = "Profil berhasil diperbarui.";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "profil";
-        header("Location: ../user_admin/profil.php");
+        header("Location: ../../user/profil.php");
     } else {
         $_SESSION['message'] = "Gagal memperbarui profil.";
         $_SESSION['message_type'] = "danger";
@@ -105,9 +106,9 @@ if (isset($_POST['submit'])) {
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Edit Profil</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
   <header id="header" class="header fixed-top d-flex align-items-center">
@@ -115,7 +116,7 @@ if (isset($_POST['submit'])) {
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
-          <a class="dropdown-item d-flex align-items-center" href="../auth/logout.php">
+          <a class="dropdown-item d-flex align-items-center" href="../../auth/logout.php">
             <i class="bi bi-box-arrow-right"></i>
           </a>
         </li>
@@ -126,26 +127,26 @@ if (isset($_POST['submit'])) {
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/index.php">
+        <a class="nav-link collapsed" href="../../user/index.php">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/perkara.php">
+        <a class="nav-link collapsed" href="../../user/perkara.php">
           <i class="bi bi-journal-text"></i>
           <span>Data Perkara</span>
         </a>
       </li> 
       <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/profil.php">
+        <a class="nav-link collapsed" href="../../user/profil.php">
           <i class="bi bi-person-circle"></i>
           <span>Profil</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../user_admin/jumlah_admin.php">
+        <a class="nav-link collapsed" href="../../user/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
         </a>
@@ -158,8 +159,8 @@ if (isset($_POST['submit'])) {
       <h1>Edit Profil</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="../user_admin/index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="../user_admin/profil.php">Profil</a></li>
+          <li class="breadcrumb-item"><a href="../../user/index.php">Home</a></li>
+          <li class="breadcrumb-item"><a href="../../user/profil.php">Profil</a></li>
           <li class="breadcrumb-item active">Edit Profil</li>
         </ol>
       </nav>
@@ -185,7 +186,7 @@ if (isset($_POST['submit'])) {
 
               <?php if (!empty($data['foto'])): ?>
                 <div class="text-center mb-3">
-                  <img src="../assets/img/<?= htmlspecialchars($data['foto']) ?>" class="rounded-circle border border-3 border-black" style="width: 120px; height: 120px; object-fit: cover;">
+                  <img src="../../assets/img/<?= htmlspecialchars($data['foto']) ?>" class="rounded-circle border border-3 border-black" style="width: 120px; height: 120px; object-fit: cover;">
                 </div>
               <?php endif; ?>
               <form method="post" enctype="multipart/form-data">
@@ -198,16 +199,37 @@ if (isset($_POST['submit'])) {
                   <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($data['username']) ?>" required>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Password Baru</label>
-                  <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
+                  <label class="form-label">Email</label>
+                  <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data['email']) ?>" required>
                 </div>
+                <div class="mb-3">
+                  <label class="form-label">No. Telp</label>
+                  <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($data['no_telp']) ?>" required>
+                </div>
+                <div class="col-12">
+                  <label for="password" class="form-label">Kata Sandi</label>
+                  <div class="input-group">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Kosongkan jika tidak ingin mengubah">
+                    <button type="button" class="btn btn-outline-secondary togglePassword" data-target="password">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label for="confirm_password" class="form-label">Konfirmasi Kata Sandi</label>
+                  <div class="input-group">
+                    <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Kosongkan jika tidak ingin mengubah">
+                    <button type="button" class="btn btn-outline-secondary togglePassword" data-target="confirm_password">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  </div>
                 <div class="mb-3">
                   <label class="form-label">Foto Profil</label>
                   <input type="file" name="foto" class="form-control" accept="image/*">
                 </div>
                 <div class="d-grid gap-2">
                   <button class="btn btn-primary" type="submit" name="submit">Perbarui</button>
-                  <a href="../user_admin/profil.php" class="btn btn-secondary w-100">Kembali</a>
+                  <a href="../../user/profil.php" class="btn btn-secondary w-100">Kembali</a>
                 </div>
               </form>
             </div>
@@ -225,4 +247,4 @@ if (isset($_POST['submit'])) {
     </div>
   </footer>
 
-  <script src="../assets/js
+  <script src="../../assets/js

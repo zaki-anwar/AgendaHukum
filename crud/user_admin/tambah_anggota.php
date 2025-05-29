@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="../../user_admin/index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="../../user_admin/jumlah_admin.php">Jumlah Anggota</a></li>
+          <li class="breadcrumb-item"><a href="../../user_admin/jumlah_anggota.php">Anggota Tim</a></li>
           <li class="breadcrumb-item active">Tambah Anggota</li>
         </ol>
       </nav>
@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }, 3000);
 </script>
-  <script>
+<script>
     document.querySelectorAll('.togglePassword').forEach(button => {
         button.addEventListener('click', function () {
             let targetId = this.getAttribute('data-target');

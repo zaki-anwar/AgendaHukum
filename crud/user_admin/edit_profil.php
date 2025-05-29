@@ -25,6 +25,9 @@ if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $username = htmlspecialchars($_POST['username']);
     $password = $_POST['password'];
+    $email = htmlspecialchars($_POST['email']);
+    $no_telp = htmlspecialchars($_POST['no_telp']);
+
 
     $cekUsername = "SELECT id FROM user WHERE username = '$username' AND id != $id";
     $cekResult = mysqli_query($conn, $cekUsername);
@@ -67,7 +70,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    $sql = "UPDATE user SET nama = '$nama', username = '$username'";
+     $sql = "UPDATE user SET nama = '$nama', username = '$username', email = '$email', no_telp = '$no_telp'";
     if (!empty($password)) {
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $sql .= ", password = '$hashed'";
@@ -190,8 +193,30 @@ if (isset($_POST['submit'])) {
                   <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($data['username']) ?>" required>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Password Baru</label>
-                  <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
+                  <label class="form-label">Email</label>
+                  <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data['email']) ?>" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">No. Telp</label>
+                  <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($data['no_telp']) ?>" required>
+                </div>
+                <div class="col-12">
+                  <label for="password" class="form-label">Kata Sandi</label>
+                  <div class="input-group">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Kosongkan jika tidak ingin mengubah">
+                    <button type="button" class="btn btn-outline-secondary togglePassword" data-target="password">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label for="confirm_password" class="form-label">Konfirmasi Kata Sandi</label>
+                  <div class="input-group">
+                    <input type="password" name="confirm_password" class="form-control" id="confirm_password" required>
+                    <button type="button" class="btn btn-outline-secondary togglePassword" data-target="confirm_password">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  </div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Foto Profil</label>
@@ -229,5 +254,24 @@ if (isset($_POST['submit'])) {
         }
     }, 3000);
   </script>
+   <script>
+    document.querySelectorAll('.togglePassword').forEach(button => {
+        button.addEventListener('click', function () {
+            let targetId = this.getAttribute('data-target');
+            let passwordField = document.getElementById(targetId);
+            let icon = this.querySelector('i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
+</script>
 </body>
 </html>
