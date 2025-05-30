@@ -158,7 +158,12 @@ if (!isset($_SESSION['username'])) {
                             echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['username']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['email'] ?? '') . "</td>";
+                            $email = htmlspecialchars($row['email'] ?? '', ENT_QUOTES, 'UTF-8');
+                              if (!empty($email)) {
+                                  echo "<td><a href='mailto:$email'>$email</a></td>";
+                              } else {
+                                  echo "<td>-</td>";
+                            }
                             $raw_nomor = $row['no_telp'] ?? '';
                             $nomor_bersih = preg_replace('/[^0-9]/', '', $raw_nomor);
                             if (str_starts_with($nomor_bersih, '0')) {
