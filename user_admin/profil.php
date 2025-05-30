@@ -112,25 +112,29 @@ if (!$profil) {
             <form action="" method="post" enctype="multipart/form-data" id="profilForm">
               <div class="mb-3">
                 <label class="form-label"><strong>Nama</strong></label>
-                <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($profil['nama']) ?>" readonly>
+                <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($profil['nama'] ?? '') ?>" readonly>
               </div>
 
               <div class="mb-3">
                 <label class="form-label"><strong>Username</strong></label>
-                <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($profil['username']) ?>" readonly>
+                <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($profil['username'] ?? '') ?>" readonly>
               </div>
+
               <div class="mb-3">
                 <label class="form-label"><strong>Status</strong></label>
-                <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($profil['status']) ?>" readonly>
+                <input type="text" name="status" class="form-control" value="<?= htmlspecialchars($profil['status'] ?? '') ?>" readonly>
               </div>
-               <div class="mb-3">
+
+              <div class="mb-3">
                 <label class="form-label"><strong>Email</strong></label>
-                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($profil['email']) ?>" readonly>
+                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($profil['email'] ?? '') ?>" readonly>
               </div>
+
               <div class="mb-3">
                 <label class="form-label"><strong>No. Telp</strong></label>
-                <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($profil['no_telp']) ?>" readonly>
+                <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($profil['no_telp'] ?? '') ?>" readonly>
               </div>
+
               <div class="d-grid gap-2 mt-3">
                 <a href="../crud/user_admin/edit_profil.php" class="btn btn-primary">Edit Profil</a>
                 <a href="../auth/logout.php" class="btn btn-danger">Logout</a>

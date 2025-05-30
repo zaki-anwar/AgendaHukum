@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $peradilan = $_POST['peradilan'] ?: '-';
     $keterangan = $_POST['keterangan'] ?: '-';
     if (empty($id_perkara) || empty($no_perkara) || empty($nama_klien) || empty($jadwal_sidang)) {
-        $_SESSION['message'] = "Semua kolom wajib diisi, kecuali Peradilan dan Keterangan.";
+        $_SESSION['message'] = "<div class='text-center'>Isi semua kolom, kecuali <b>Peradilan</b> dan <b>Keterangan</b>.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: tambah_dataperkara.php");
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_cek->store_result();
 
     if ($stmt_cek->num_rows > 0) {
-        $_SESSION['message'] = "Nomor perkara '$no_perkara' sudah terdaftar.";
+        $_SESSION['message'] = "<div class='text-center'>Nomor perkara <b>$no_perkara</b> sudah terdaftar.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: tambah_dataperkara.php"); 
@@ -43,13 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("isssss", $id_perkara, $no_perkara, $nama_klien, $jadwal_sidang, $peradilan, $keterangan);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Data perkara berhasil ditambahkan!";
+        $_SESSION['message'] = "<div class='text-center'>Data perkara <b>$no_perkara</b> berhasil ditambahkan!.</div>";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: ../../user_admin/perkara.php");
         exit();
     } else {
-        $_SESSION['message'] = "Terjadi kesalahan saat menambahkan data: " . $stmt->error;
+        $_SESSION['message'] = "<div class='text-center'>Terjadi kesalahan saat menambahkan data <b>$no_perkara</b>.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
     }

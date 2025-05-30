@@ -116,23 +116,38 @@ if (!isset($_SESSION['username'])) {
                       <thead>
                         <tr>
                           <th>No</th>
-                          <th>Nama Admin</th>
+                          <th>Nama</th>
                           <th>Username</th>
+                          <th>Status</th>
+                          <th>email</th>
+                          <th>No. Tlp</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php
-                          $query = "SELECT * FROM user";
+                          $query = "SELECT * FROM user ORDER BY 
+                                    CASE WHEN status = 'admin' THEN 0 ELSE 1 END, 
+                                    nama ASC";
                           $result = mysqli_query($conn, $query);
                           $no = 1;
                           while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
                             echo "<td>" . $no++ . "</td>";
                             echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['username']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['status']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['email'] ?? '') . "</td>";
+                            $raw_nomor = $row['no_telp'] ?? '';
+                            $nomor_bersih = preg_replace('/[^0-9]/', '', $raw_nomor);
+                            if (str_starts_with($nomor_bersih, '0')) {
+                                $nomor_wa = '62' . substr($nomor_bersih, 1);
+                            } else {
+                                $nomor_wa = $nomor_bersih;
+                            }
+                            echo "<td><a href='https://wa.me/" . htmlspecialchars($nomor_wa, ENT_QUOTES, 'UTF-8') . "' target='_blank'>" . htmlspecialchars($raw_nomor, ENT_QUOTES, 'UTF-8') . "</a></td>";
                             echo "</tr>";
                           }
-                          ?>
+                        ?>
                       </tbody>
                     </table>
                   </div>

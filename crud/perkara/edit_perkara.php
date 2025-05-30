@@ -11,7 +11,7 @@ if (isset($_GET['id_perkara'])) {
     $id_perkara = $_GET['id_perkara'];
 
     if (!filter_var($id_perkara, FILTER_VALIDATE_INT)) {
-        $_SESSION['message'] = "ID perkara tidak valid.";
+        $_SESSION['message'] = "ID perkara <b>$nama_perkara</b> tidak valid.";
         $_SESSION['message_type'] = "danger";
         header("Location: ../../user_admin/perkara.php");
         exit();
@@ -24,7 +24,7 @@ if (isset($_GET['id_perkara'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows == 0) {
-        $_SESSION['message'] = "$nama_perkara tidak ditemukan.";
+        $_SESSION['message'] = "<div class='text-center'><b>$nama_perkara</b> tidak ditemukan.</div>";
         $_SESSION['message_type'] = "danger";
         header("Location: ../../user_admin/perkara.php");
         exit();
@@ -32,7 +32,7 @@ if (isset($_GET['id_perkara'])) {
 
     $perkara = $result->fetch_assoc();
 } else {
-    $_SESSION['message'] = "ID Perkara tidak ditemukan.";
+    $_SESSION['message'] = "<div class='text-center'>ID <b>$nama_perkara</b> tidak ditemukan.</div>";
     $_SESSION['message_type'] = "danger";
     header("Location: ../../user_admin/perkara.php");
     exit();
@@ -42,13 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_perkara = trim($_POST['nama_perkara']);
 
     if (empty($nama_perkara)) {
-        $_SESSION['message'] = "Nama Perkara harus diisi.";
+        $_SESSION['message'] = "<div class='text-center'>Nama Perkara harus diisi.</div>";
         $_SESSION['message_type'] = "danger";
         header("Location: edit_perkara.php?id_perkara=" . $id_perkara);
         exit();
     }
 
-    // Cek apakah nama_perkara sudah digunakan oleh data lain
     $cek_query = "SELECT id_perkara FROM perkara WHERE nama_perkara = ? AND id_perkara != ?";
     $cek_stmt = $conn->prepare($cek_query);
     $cek_stmt->bind_param("si", $nama_perkara, $id_perkara);
@@ -56,25 +55,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cek_result = $cek_stmt->get_result();
 
     if ($cek_result->num_rows > 0) {
-        $_SESSION['message'] = "$nama_perkara sudah digunakan.";
+        $_SESSION['message'] = "<div class='text-center'><b>$nama_perkara</b> sudah digunakan.</div>";
         $_SESSION['message_type'] = "danger";
         header("Location: edit_perkara.php?id_perkara=" . $id_perkara);
         exit();
     }
 
-    // Update jika tidak duplikat
     $update_query = "UPDATE perkara SET nama_perkara = ? WHERE id_perkara = ?";
     $stmt = $conn->prepare($update_query);
     $stmt->bind_param("si", $nama_perkara, $id_perkara);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "$nama_perkara berhasil diperbarui.";
+        $_SESSION['message'] = "<div class='text-center'><b>$nama_perkara</b> berhasil diperbarui.</div>";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "perkara";
         header("Location: ../../user_admin/perkara.php");
         exit();
     } else {
-        $_SESSION['message'] = "Terjadi kesalahan saat memperbarui $nama_perkara.";
+        $_SESSION['message'] = "<div class='text-center'>Terjadi kesalahan saat memperbarui <b>$nama_perkara</b>.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "perkara";
         header("Location: edit_perkara.php?id_perkara=" . $id_perkara);

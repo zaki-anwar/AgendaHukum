@@ -26,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['message_type'] = "success";
             $_SESSION['message_section'] = "login";
 
-            // Redirect berdasarkan status
             if ($row['status'] == 'admin') {
                 header("Location: ../user_admin/index.php");
             } else {
@@ -34,19 +33,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit();
         } else {
-            // Password salah
             $_SESSION['message'] = "<div class='text-center'>Password salah!</div>";
             $_SESSION['message_type'] = "danger";
             $_SESSION['message_section'] = "login";
         }
     } else {
-        // Username tidak ditemukan
         $_SESSION['message'] = "<div class='text-center'>Username tidak ditemukan!</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "login";
     }
-
-    // Redirect kembali ke halaman login kalau gagal
     header("Location: login.php");
     exit();
 }

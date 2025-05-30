@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_perkara = trim($_POST['nama_perkara']);
 
     if (empty($nama_perkara)) {
-        $_SESSION['message'] = "Nama perkara tidak boleh kosong.";
+        $_SESSION['message'] = "<div class='text-center'>Nama perkara tidak boleh kosong.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "perkara";
         header("Location: tambah_perkara.php");
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_cek->store_result();
 
     if ($stmt_cek->num_rows > 0) {
-        $_SESSION['message'] = "$nama_perkara sudah ada.";
+        $_SESSION['message'] = "<div class='text-center'><b>$nama_perkara</b> sudah ada.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "perkara";
         header("Location: tambah_perkara.php");
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("s", $nama_perkara);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "$nama_perkara berhasil ditambahkan!";
+        $_SESSION['message'] = "<div class='text-center'><b>$nama_perkara</b> berhasil ditambahkan!</div>";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "perkara";
     } else {
-        $_SESSION['message'] = "Gagal menambahkan perkara:$nama_perkara " . $stmt->error;
+        $_SESSION['message'] = "<div class='text-center'>Gagal menambahkan <b>$nama_perkara</b>. </div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "perkara";
     }

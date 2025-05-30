@@ -101,9 +101,18 @@ if (!isset($_SESSION['username'])) {
             unset($_SESSION['message_type']);
             unset($_SESSION['message_section']);
           }
-          ?>
-          <?php
           if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'hapus_anggota') {
+            $message = $_SESSION['message'];
+            $message_type = $_SESSION['message_type'];
+            echo "<div id='alertMessage' class='alert alert-$message_type alert-dismissible fade show' role='alert'>
+                    $message
+                  </div>";
+        
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+            unset($_SESSION['message_section']);
+          }
+          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'tambah_anggota') {
             $message = $_SESSION['message'];
             $message_type = $_SESSION['message_type'];
             echo "<div id='alertMessage' class='alert alert-$message_type alert-dismissible fade show' role='alert'>
@@ -149,8 +158,15 @@ if (!isset($_SESSION['username'])) {
                             echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['username']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['no_telp']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['email'] ?? '') . "</td>";
+                            $raw_nomor = $row['no_telp'] ?? '';
+                            $nomor_bersih = preg_replace('/[^0-9]/', '', $raw_nomor);
+                            if (str_starts_with($nomor_bersih, '0')) {
+                                $nomor_wa = '62' . substr($nomor_bersih, 1);
+                            } else {
+                                $nomor_wa = $nomor_bersih;
+                            }
+                            echo "<td><a href='https://wa.me/" . htmlspecialchars($nomor_wa, ENT_QUOTES, 'UTF-8') . "' target='_blank'>" . htmlspecialchars($raw_nomor, ENT_QUOTES, 'UTF-8') . "</a></td>";
                             echo "<td>
                                     <a href='../crud/user_admin/edit_anggota.php?edit_anggota=" . $row['id'] . "' class='text-primary me-3'>
                                       <i class='bi bi-pencil-square'></i>

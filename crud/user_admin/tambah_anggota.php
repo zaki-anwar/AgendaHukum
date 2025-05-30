@@ -8,15 +8,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
     $status = isset($_POST['status']) ? $_POST['status'] : 'user'; 
+    $allowed_status = ['admin', 'user'];
+
 
     if (empty($nama) || empty($username) || empty($password) || empty($confirm_password)) {
         $_SESSION['message'] = "<div class='text-center'>Semua field wajib diisi!</div>";
         $_SESSION['message_type'] = "danger";
-        $_SESSION['message_section'] = "tambah_admin";
+        $_SESSION['message_section'] = "tambah_anggota";
+     } elseif (!in_array($status, $allowed_status)) {
+        $_SESSION['message'] = "<div class='text-center'>Status tidak valid!</div>";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "tambah_anggota";
+        header("Location: tambah_anggota.php");
+        exit();
     } elseif ($password !== $confirm_password) {
         $_SESSION['message'] = "<div class='text-center'>Konfirmasi kata sandi tidak cocok!</div>";
         $_SESSION['message_type'] = "danger";
-        $_SESSION['message_section'] = "tambah_admin";
+        $_SESSION['message_section'] = "tambah_anggota";
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -27,24 +35,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            $_SESSION['message'] = "<div class='text-center'>Username sudah terdaftar!</div>";
+            $_SESSION['message'] = "<div class='text-center'>Username <b>$username</b> sudah terdaftar!</div>";
             $_SESSION['message_type'] = "danger";
-            $_SESSION['message_section'] = "tambah_admin";
+            $_SESSION['message_section'] = "tambah_anggota";
         } else {
             $query = "INSERT INTO user (nama, username, password, status) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("ssss", $nama, $username, $hashed_password, $status);
 
             if ($stmt->execute()) {
-                $_SESSION['message'] = "<div class='text-center'>$nama berhasil ditambah sebagai $status!</div>";
+                $_SESSION['message'] = "<div class='text-center'><b>$username</b> berhasil ditambah sebagai <b>$status</b>!</div>";
                 $_SESSION['message_type'] = "success";
-                $_SESSION['message_section'] = "tambah_admin";
+                $_SESSION['message_section'] = "tambah_anggota";
                 header("Location: ../../user_admin/jumlah_anggota.php");
                 exit();
             } else {
                 $_SESSION['message'] = "<div class='text-center'>Terjadi kesalahan saat menambah!</div>";
                 $_SESSION['message_type'] = "danger";
-                $_SESSION['message_section'] = "tambah_admin";
+                $_SESSION['message_section'] = "tambah_anggota";
             }
         }
         $stmt->close();
@@ -114,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <div class="row">
         <div class="col-lg-12">
           <?php
-          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'tambah_admin') {
+          if (isset($_SESSION['message']) && isset($_SESSION['message_section']) && $_SESSION['message_section'] == 'tambah_anggota') {
             $message = $_SESSION['message'];
             $message_type = $_SESSION['message_type'];
             echo "<div id='alertMessage' class='alert alert-$message_type alert-dismissible fade show' role='alert'>

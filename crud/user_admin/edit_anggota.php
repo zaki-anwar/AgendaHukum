@@ -7,46 +7,71 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Ambil data user berdasarkan ID dari URL
 if (isset($_GET['edit_anggota'])) {
     $id = $_GET['edit_anggota'];
-    $query = "SELECT * FROM user WHERE id = $id";
-    $result = mysqli_query($conn, $query);
-    $data = mysqli_fetch_assoc($result);
 
-    if (!$data) {
-        $_SESSION['message'] = "Data anggota tidak ditemukan.";
+    if (!filter_var($id, FILTER_VALIDATE_INT)) {
+        $_SESSION['message'] = "<div class='text-center'>ID tidak valid.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "edit_anggota";
         header("Location: ../../user_admin/jumlah_anggota.php");
         exit();
     }
+
+    $query = "SELECT * FROM user WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+
+    if (!$data) {
+        $_SESSION['message'] = "<div class='text-center'>User tidak ditemukan.</div>";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "edit_anggota";
+        header("Location: ../../user_admin/jumlah_anggota.php");
+        exit();
+    }
+
+    $username = $data['username']; 
+
 } else {
-    $_SESSION['message'] = "ID anggota tidak valid.";
+    $_SESSION['message'] = "<div class='text-center'>ID tidak valid.</div>";
     $_SESSION['message_type'] = "danger";
     $_SESSION['message_section'] = "edit_anggota";
     header("Location: ../../user_admin/jumlah_anggota.php");
     exit();
 }
 
-// Proses simpan perubahan
 if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $status = htmlspecialchars($_POST['status']);
     $password = $_POST['password'];
 
-    if (!empty($password)) {
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "UPDATE user SET nama = '$nama', status = '$status', password = '$hashed' WHERE id = $id";
-    } else {
-        $sql = "UPDATE user SET nama = '$nama', status = '$status' WHERE id = $id";
+    if (!in_array($status, ['admin', 'user'])) { 
+        $_SESSION['message'] = "<div class='text-center'>Status tidak valid.<div>";
+        $_SESSION['message_type'] = "danger";
+        $_SESSION['message_section'] = "edit_anggota";
+        header("Location: ../../user_admin/jumlah_anggota.php");
+        exit();
     }
 
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "Data anggota berhasil diperbarui.";
+    if (!empty($password)) {
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE user SET nama = ?, status = ?, password = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssi", $nama, $status, $hashed, $id);
+    } else {
+        $sql = "UPDATE user SET nama = ?, status = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssi", $nama, $status, $id);
+    }
+
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "<div class='text-center'><b>$username</b> berhasil diperbarui.</div>";
         $_SESSION['message_type'] = "success";
     } else {
-        $_SESSION['message'] = "Data anggota gagal diperbarui.";
+        $_SESSION['message'] = "<div class='text-center'><b>$username</b> gagal diperbarui.</div>";
         $_SESSION['message_type'] = "danger";
     }
 
@@ -55,6 +80,7 @@ if (isset($_POST['submit'])) {
     exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

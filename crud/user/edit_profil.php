@@ -9,13 +9,12 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['id_user'])) {
 
 $id = $_SESSION['id_user'];
 
-// Ambil data user yang sedang login
 $query = "SELECT * FROM user WHERE id = $id";
 $result = mysqli_query($conn, $query);
 $data = mysqli_fetch_assoc($result);
 
 if (!$data) {
-    $_SESSION['message'] = "Data tidak ditemukan.";
+    $_SESSION['message'] = "<div class=text-center>Data tidak ditemukan.<div>";
     $_SESSION['message_type'] = "danger";
     $_SESSION['message_section'] = "edit_profil";
     header("Location: index.php");
@@ -34,7 +33,7 @@ if (isset($_POST['submit'])) {
     $cekResult = mysqli_query($conn, $cekUsername);
 
     if (mysqli_num_rows($cekResult) > 0) {
-        $_SESSION['message'] = "Username sudah digunakan oleh pengguna lain.";
+        $_SESSION['message'] = "<div class=text-center>Username sudah digunakan oleh pengguna lain.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "edit_profil";
         header("Location: edit_profil.php");
@@ -58,14 +57,14 @@ if (isset($_POST['submit'])) {
                     unlink("../../assets/img/" . $data['foto']);
                 }
             } else {
-                $_SESSION['message'] = "Gagal mengupload foto.";
+                $_SESSION['message'] = "<div class='text-center'>Gagal mengupload foto.</div>";
                 $_SESSION['message_type'] = "danger";
                 $_SESSION['message_section'] = "edit_profil";
                 header("Location: edit_profil.php");
                 exit();
             }
         } else {
-            $_SESSION['message'] = "Format foto tidak didukung. Gunakan jpg, jpeg, png, atau gif.";
+            $_SESSION['message'] = "<div class='text-center'>Format foto tidak didukung. Gunakan jpg, jpeg, png, atau gif.</div>";
             $_SESSION['message_type'] = "danger";
             $_SESSION['message_section'] = "edit_profil";
             header("Location: edit_profil.php");
@@ -90,7 +89,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['message_section'] = "profil";
         header("Location: ../../user/profil.php");
     } else {
-        $_SESSION['message'] = "Gagal memperbarui profil.";
+        $_SESSION['message'] = "<div class='text-center'>Gagal memperbarui profil.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "edit_profil";
         header("Location: edit_profil.php");
@@ -192,19 +191,19 @@ if (isset($_POST['submit'])) {
               <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                   <label class="form-label">Nama</label>
-                  <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($data['nama']) ?>" required>
+                  <input type="text" name="nama" class="form-control" value="<?= htmlspecialchars($data['nama'] ?? '') ?>" required>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Username</label>
-                  <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($data['username']) ?>" required>
+                  <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($data['username'] ?? '') ?>" required>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Email</label>
-                  <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data['email']) ?>" required>
+                  <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data['email'] ?? '') ?>" required>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">No. Telp</label>
-                  <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($data['no_telp']) ?>" required>
+                  <input type="text" name="no_telp" class="form-control" value="<?= htmlspecialchars($data['no_telp'] ?? '') ?>" required>
                 </div>
                 <div class="col-12">
                   <label for="password" class="form-label">Kata Sandi</label>
@@ -223,12 +222,13 @@ if (isset($_POST['submit'])) {
                       <i class="bi bi-eye-fill"></i>
                     </button>
                   </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Foto Profil</label>
                   <input type="file" name="foto" class="form-control" accept="image/*">
                 </div>
                 <div class="d-grid gap-2">
-                  <button class="btn btn-primary" type="submit" name="submit">Perbarui</button>
+                  <button class="btn btn-primary" type="submit" name="submit">Perbarui Profil</button>
                   <a href="../../user/profil.php" class="btn btn-secondary w-100">Kembali</a>
                 </div>
               </form>

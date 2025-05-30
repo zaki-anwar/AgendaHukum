@@ -11,7 +11,7 @@ if (isset($_GET['id_data'])) {
     $id_data = $_GET['id_data'];
 
     if (!filter_var($id_data, FILTER_VALIDATE_INT)) {
-        $_SESSION['message'] = "ID data perkara tidak valid.";
+        $_SESSION['message'] = "<div class='text-center'>ID data <b>$no_perkara</b> tidak valid.</div>";
         $_SESSION['message_type'] = "danger";
         header("Location: ../../user_admin/perkara.php");
         exit();
@@ -27,7 +27,7 @@ if (isset($_GET['id_data'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows == 0) {
-        $_SESSION['message'] = "Data perkara tidak ditemukan.";
+        $_SESSION['message'] = "<div class='text-center'>Data <b>$no_perkara</b> tidak ditemukan.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: ../../user_admin/perkara.php");
@@ -36,7 +36,7 @@ if (isset($_GET['id_data'])) {
 
     $data_perkara = $result->fetch_assoc();
 } else {
-    $_SESSION['message'] = "ID data perkara tidak ditemukan.";
+    $_SESSION['message'] = "<div class='text-center'>ID data <b>$no_perkara</b> tidak ditemukan.</div>";
     $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
     header("Location: ../../user_admin/perkara.php");
@@ -51,14 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $keterangan = $_POST['keterangan'] ?: '-';
 
     if (empty($no_perkara) || empty($nama_klien)) {
-        $_SESSION['message'] = "Nomor perkara dan nama klien harus diisi.";
+        $_SESSION['message'] = "<div class='text-center'>Nomor perkara dan nama klien harus diisi.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: edit_dataperkara.php?id_data=" . $id_data);
         exit();
     }
 
-    // Cek apakah nomor perkara sudah digunakan oleh data lain
     $cek_query = "SELECT id_data FROM data_perkara WHERE no_perkara = ? AND id_data != ?";
     $cek_stmt = $conn->prepare($cek_query);
     $cek_stmt->bind_param("si", $no_perkara, $id_data);
@@ -66,14 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cek_result = $cek_stmt->get_result();
 
     if ($cek_result->num_rows > 0) {
-        $_SESSION['message'] = "Nomor perkara sudah digunakan oleh data lain.";
+        $_SESSION['message'] = "<div class='text-center'>$no_perkara sudah digunakan.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: edit_dataperkara.php?id_data=" . $id_data);
         exit();
     }
 
-    // Proses update
     $update_query = "UPDATE data_perkara 
                      SET no_perkara = ?, nama_klien = ?, jadwal_sidang = ?, peradilan = ?, keterangan = ? 
                      WHERE id_data = ?";
@@ -81,13 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sssssi", $no_perkara, $nama_klien, $jadwal_sidang, $peradilan, $keterangan, $id_data);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Data perkara berhasil diperbarui.";
+        $_SESSION['message'] = "<div class='text-center'>Data <b>$no_perkara</b> berhasil diperbarui.</div>";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: ../../user_admin/perkara.php");
         exit();
     } else {
-        $_SESSION['message'] = "Terjadi kesalahan saat memperbarui data perkara.";
+        $_SESSION['message'] = "<div class='text-center'>Terjadi kesalahan.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: edit_dataperkara.php?id_data=" . $id_data);
