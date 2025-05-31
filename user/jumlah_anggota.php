@@ -49,7 +49,6 @@ if (!isset($_SESSION['username'])) {
           <span>Data Perkara</span>
         </a>
       </li> 
-      <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="profil.php">
           <i class="bi bi-person-lines-fill"></i>
@@ -60,6 +59,13 @@ if (!isset($_SESSION['username'])) {
         <a class="nav-link" href="jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
+        </a>
+      </li>
+      <li class="nav-heading">__________________________________________________</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../auth/logout.php">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
         </a>
       </li>
     </ul>
@@ -136,7 +142,12 @@ if (!isset($_SESSION['username'])) {
                             echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['username']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['email'] ?? '') . "</td>";
+                            $email = htmlspecialchars($row['email'] ?? '', ENT_QUOTES, 'UTF-8');
+                              if (!empty($email)) {
+                                  echo "<td><a href='mailto:$email'>$email</a></td>";
+                              } else {
+                                  echo "<td>-</td>";
+                            }
                             $raw_nomor = $row['no_telp'] ?? '';
                             $nomor_bersih = preg_replace('/[^0-9]/', '', $raw_nomor);
                             if (str_starts_with($nomor_bersih, '0')) {

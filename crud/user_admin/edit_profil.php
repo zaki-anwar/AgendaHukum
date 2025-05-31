@@ -133,7 +133,6 @@ if (isset($_POST['submit'])) {
           <span>Data Perkara</span>
         </a>
       </li> 
-      <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
         <a class="nav-link" href="../../user_admin/profil.php">
           <i class="bi bi-person-circle"></i>
@@ -144,6 +143,13 @@ if (isset($_POST['submit'])) {
         <a class="nav-link collapsed" href="../../user_admin/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
+        </a>
+      </li>
+      <li class="nav-heading">__________________________________________________</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../../auth/logout.php">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
         </a>
       </li>
     </ul>

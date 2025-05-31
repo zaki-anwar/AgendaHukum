@@ -63,7 +63,6 @@ if ($result && $result->num_rows > 0) {
           <span>Data Perkara</span>
         </a>
       </li> 
-      <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="user/profil.php">
           <i class="bi bi-person-circle"></i>
@@ -74,6 +73,13 @@ if ($result && $result->num_rows > 0) {
         <a class="nav-link collapsed" href="user/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
+        </a>
+      </li>
+      <li class="nav-heading">__________________________________________________</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="auth/login.php">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
         </a>
       </li>
     </ul>

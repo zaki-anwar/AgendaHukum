@@ -2,21 +2,26 @@
 session_start();
 include "../config/db.php";
 
-$username = $_SESSION['username'];
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: ../auth/login.php");
+    exit();
+}
+
+$nama = $_SESSION['nama'] ?? '';
+
 $query = "SELECT p.nama_perkara, COUNT(dp.id_data) AS jumlah_data_perkara 
           FROM perkara p
           LEFT JOIN data_perkara dp ON dp.id_perkara = p.id_perkara
           GROUP BY p.id_perkara";
 $result = mysqli_query($conn, $query);
 
-if ($result && $result->num_rows > 0) {
-    $data_perkara = [];
-    while ($row = $result->fetch_assoc()) {
+$data_perkara = [];
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
         $data_perkara[] = $row;
     }
-} else {
-    $data_perkara = [];
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +69,6 @@ if ($result && $result->num_rows > 0) {
           <span>Data Perkara</span>
         </a>
       </li> 
-      <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="profil.php">
           <i class="bi bi-person-circle"></i>
@@ -75,6 +79,13 @@ if ($result && $result->num_rows > 0) {
         <a class="nav-link collapsed" href="jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
+        </a>
+      </li>
+      <li class="nav-heading">__________________________________________________</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../auth/logout.php">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
         </a>
       </li>
     </ul>
@@ -104,7 +115,7 @@ if ($result && $result->num_rows > 0) {
           unset($_SESSION['message_section']);
       }
       ?>
-      <h1 class="card-title pb-2 fs-4">Selamat datang <b><?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?></b></h1>
+      <h1 class="card-title pb-2 fs-4">Selamat datang <b><?php echo htmlspecialchars($nama, ENT_QUOTES, 'UTF-8'); ?></b></h1>
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center pb-2 fs-4">Data Perkara</h5>

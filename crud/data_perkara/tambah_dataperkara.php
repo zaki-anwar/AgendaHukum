@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $peradilan = $_POST['peradilan'] ?: '-';
     $keterangan = $_POST['keterangan'] ?: '-';
     if (empty($id_perkara) || empty($no_perkara) || empty($nama_klien) || empty($jadwal_sidang)) {
-        $_SESSION['message'] = "<div class='text-center'>Isi semua kolom, kecuali <b>Peradilan</b> dan <b>Keterangan</b>.</div>";
+        $_SESSION['message'] = "<b>Jenis Perkara</b>,<b>No Perkara</b> dan <b>Nama Klien</b> Harus diisi.";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: tambah_dataperkara.php");
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_cek->store_result();
 
     if ($stmt_cek->num_rows > 0) {
-        $_SESSION['message'] = "<div class='text-center'>Nomor perkara <b>$no_perkara</b> sudah terdaftar.</div>";
+        $_SESSION['message'] = "Nomor perkara <b>$no_perkara</b> sudah terdaftar.";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "data_perkara";
         header("Location: tambah_dataperkara.php"); 
@@ -100,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <span>Data Perkara</span>
         </a>
       </li> 
-      <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="../../user_admin/profil.php">
           <i class="bi bi-person-circle"></i>
@@ -111,6 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a class="nav-link collapsed" href="../../user_admin/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
+        </a>
+      </li>
+      <li class="nav-heading">__________________________________________________</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../../auth/logout.php">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
         </a>
       </li>
     </ul>
@@ -150,8 +156,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <h5 class="card-title text-center pb-2 fs-4">Masukkan data perkara</h5>
               <form method="POST" action="" class="row g-3 needs-validation" novalidate>
                 <div class="col-12">
-                  <label for="id_perkara" class="col-sm-2 col-form-label">Pilih Jenis Perkara</label>
-                  <select name="id_perkara" id="id_perkara" class="form-select" aria-label="Default select example">
+                  <label for="id_perkara" class="col-sm-2 col-form-label">Jenis Perkara</label>
+                  <select name="id_perkara" id="id_perkara" class="form-select" aria-label="Default select example" required>
                     <option selected>--Pilih Perkara--</option>
                     <?php
                       $query = "SELECT id_perkara, nama_perkara FROM perkara";
@@ -173,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="col-12">
                   <label for="jadwal_sidang" class="col-sm-2 col-form-label">Jadwal Sidang</label>
-                  <input type="datetime-local" name="jadwal_sidang" class="form-control" id="jadwal_sidang" required>
+                  <input type="datetime-local" name="jadwal_sidang" class="form-control" id="jadwal_sidang">
                 </div>
                 <div class="col-12">
                   <label for="peradilan" class="form-label">Peradilan</label>

@@ -14,13 +14,12 @@ $result = mysqli_query($conn, $query);
 $data = mysqli_fetch_assoc($result);
 
 if (!$data) {
-    $_SESSION['message'] = "<div class=text-center>Data tidak ditemukan.<div>";
+    $_SESSION['message'] = "<div class='text-center'>Data tidak ditemukan.</div>";
     $_SESSION['message_type'] = "danger";
     $_SESSION['message_section'] = "edit_profil";
-    header("Location: index.php");
+    header("Location: ../../index.php");
     exit();
 }
-
 if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama']);
     $username = htmlspecialchars($_POST['username']);
@@ -33,14 +32,13 @@ if (isset($_POST['submit'])) {
     $cekResult = mysqli_query($conn, $cekUsername);
 
     if (mysqli_num_rows($cekResult) > 0) {
-        $_SESSION['message'] = "<div class=text-center>Username sudah digunakan oleh pengguna lain.</div>";
+        $_SESSION['message'] = "<div class='text-center'>Username $username sudah digunakan.</div>";
         $_SESSION['message_type'] = "danger";
         $_SESSION['message_section'] = "edit_profil";
         header("Location: edit_profil.php");
         exit();
     }
 
-    // Proses upload foto jika ada
     $fotoBaru = '';
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
         $fotoName = basename($_FILES['foto']['name']);
@@ -52,7 +50,6 @@ if (isset($_POST['submit'])) {
             $fotoBaru = uniqid() . '.' . $fotoExt;
             $uploadPath = "../../assets/img/" . $fotoBaru;
             if (move_uploaded_file($fotoTmp, $uploadPath)) {
-                // Hapus foto lama jika ada
                 if (!empty($data['foto']) && file_exists("../../assets/img/" . $data['foto'])) {
                     unlink("../../assets/img/" . $data['foto']);
                 }
@@ -64,7 +61,7 @@ if (isset($_POST['submit'])) {
                 exit();
             }
         } else {
-            $_SESSION['message'] = "<div class='text-center'>Format foto tidak didukung. Gunakan jpg, jpeg, png, atau gif.</div>";
+            $_SESSION['message'] = "<div class='text-center'>Format foto tidak didukung.</div>";
             $_SESSION['message_type'] = "danger";
             $_SESSION['message_section'] = "edit_profil";
             header("Location: edit_profil.php");
@@ -72,8 +69,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    // Update data
-   $sql = "UPDATE user SET nama = '$nama', username = '$username', email = '$email', no_telp = '$no_telp'";
+     $sql = "UPDATE user SET nama = '$nama', username = '$username', email = '$email', no_telp = '$no_telp'";
     if (!empty($password)) {
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $sql .= ", password = '$hashed'";
@@ -84,7 +80,7 @@ if (isset($_POST['submit'])) {
     $sql .= " WHERE id = $id";
 
     if (mysqli_query($conn, $sql)) {
-        $_SESSION['message'] = "Profil berhasil diperbarui.";
+        $_SESSION['message'] = "<div class='text-center'>Profil berhasil diperbarui.</div>";
         $_SESSION['message_type'] = "success";
         $_SESSION['message_section'] = "profil";
         header("Location: ../../user/profil.php");
@@ -137,9 +133,8 @@ if (isset($_POST['submit'])) {
           <span>Data Perkara</span>
         </a>
       </li> 
-      <li class="nav-heading">__________________________________________________</li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="../../user/profil.php">
+        <a class="nav-link" href="../../user/profil.php">
           <i class="bi bi-person-circle"></i>
           <span>Profil</span>
         </a>
@@ -148,6 +143,13 @@ if (isset($_POST['submit'])) {
         <a class="nav-link collapsed" href="../../user/jumlah_anggota.php">
           <i class="bi bi-person-lines-fill"></i>
           <span>Anggota Tim</span>
+        </a>
+      </li>
+      <li class="nav-heading">__________________________________________________</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="../../auth/logout.php">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
         </a>
       </li>
     </ul>
@@ -170,13 +172,11 @@ if (isset($_POST['submit'])) {
         <div class="col-lg-12">
 
           <?php
-          if (isset($_SESSION['message']) && $_SESSION['message_section'] == 'edit_profil') {
-              echo "<div id='alertMessage' class='alert alert-{$_SESSION['message_type']} alert-dismissible fade show' role='alert'>
-                      {$_SESSION['message']}
-                      <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>";
-              unset($_SESSION['message'], $_SESSION['message_type'], $_SESSION['message_section']);
-          }
+          if (isset($_SESSION['message'])) {
+              echo "<div  id='alertMessage' class='alert alert-{$_SESSION['message_type']}'>" . $_SESSION['message'] . "</div>";
+              unset($_SESSION['message']);
+              unset($_SESSION['message_type']);
+            }
           ?>
 
           <div class="card">
@@ -246,5 +246,37 @@ if (isset($_POST['submit'])) {
       <p class="small">by Kelompok_8</p>
     </div>
   </footer>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <script src="../../assets/js
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    setTimeout(function() {
+        let alertBox = document.getElementById("alertMessage");
+        if (alertBox) {
+            alertBox.style.transition = "opacity 0.5s";
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 300);
+        }
+    }, 3000);
+  </script>
+   <script>
+    document.querySelectorAll('.togglePassword').forEach(button => {
+        button.addEventListener('click', function () {
+            let targetId = this.getAttribute('data-target');
+            let passwordField = document.getElementById(targetId);
+            let icon = this.querySelector('i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
+</script>
+</body>
+</html>

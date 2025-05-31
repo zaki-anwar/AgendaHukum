@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $row['username'];
             $_SESSION['id_user'] = $row['id'];
             $_SESSION['status'] = $row['status'];
+            $_SESSION['nama'] = $row['nama'];
 
             $_SESSION['message'] = "Login berhasil!";
             $_SESSION['message_type'] = "success";
@@ -79,17 +80,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span>Data Perkara</span>
           </a>
         </li> 
-        <li class="nav-heading">__________________________________________________</li>
         <li class="nav-item">
-        <a class="nav-link collapsed" href="../user/profil.php">
-          <i class="bi bi-person-circle"></i>
-          <span>Profil</span>
-        </a>
-      </li>
+          <a class="nav-link collapsed" href="../user/profil.php">
+            <i class="bi bi-person-circle"></i>
+            <span>Profil</span>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link collapsed" href="../user/jumlah_anggota.php">
             <i class="bi bi-person-lines-fill"></i>
             <span>Anggota Tim</span>
+          </a>
+        </li>
+        <li class="nav-heading">__________________________________________________</li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.php">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span>Login</span>
           </a>
         </li>
       </ul>
