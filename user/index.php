@@ -37,16 +37,18 @@ if ($result && mysqli_num_rows($result) > 0) {
 </head>
 <body>
   <header id="header" class="header fixed-top d-flex align-items-center">
-    <i class="bi bi-list toggle-sidebar-btn"></i>
-
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.php" class="logo d-flex align-items-center">
+        <img src="../assets/img/logo.jpg" alt="">
+        <h6 class="card-logo">LEMBAGA BANTUAN HUKUM<br>TARETAN LEGAL JUSTITIA</h6>
+      </a>
+    </div>
+    
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+        
         <li class="nav-item dropdown pe-3">
-          <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
-            <a class="dropdown-item d-flex align-items-center" href="../auth/logout.php" title="Logout">
-              <i class="bi bi-box-arrow-right"></i>
-            </a>
-          <?php endif; ?>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
         </li>
       </ul>
     </nav>
@@ -143,51 +145,65 @@ if ($result && mysqli_num_rows($result) > 0) {
       <div class="card-body">
         <h5 class="card-title text-center pb-2 fs-4">Sidang Terdekat</h5>
         <?php
-          $query = "SELECT p.nama_perkara, dp.no_perkara, dp.nama_klien, dp.jadwal_sidang, dp.peradilan, dp.keterangan
+          $query = "SELECT p.id_perkara, p.nama_perkara, dp.id_data, dp.no_perkara, dp.nama_klien, dp.jadwal_sidang, dp.peradilan, dp.keterangan
                     FROM perkara p
                     LEFT JOIN data_perkara dp ON p.id_perkara = dp.id_perkara
                     WHERE dp.jadwal_sidang >= CURDATE()
                     ORDER BY dp.jadwal_sidang ASC
-                    LIMIT 3";
+                    LIMIT 3";  
           $result = mysqli_query($conn, $query);
+        if (mysqli_num_rows($result) > 0) {
+            $current_perkara = null;
+            $no = 1;
 
-          if ($result && mysqli_num_rows($result) > 0) {
-              echo "<table class='table table-bordered'>
-                      <thead>
-                        <tr>
-                          <th>Perkara</th>
-                          <th>Nomor Perkara</th>
-                          <th>Nama Klien</th>
-                          <th>Jadwal Sidang</th>
-                          <th>Peradilan</th>
-                          <th>Keterangan</th>
-                        </tr>
-                      </thead><tbody>";
-              while ($row = mysqli_fetch_assoc($result)) {
-                  echo "<tr>";
-                  echo "<td>" . htmlspecialchars($row['nama_perkara'], ENT_QUOTES, 'UTF-8') . "</td>";
-                  echo "<td>" . htmlspecialchars($row['no_perkara'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
-                  echo "<td>" . htmlspecialchars($row['nama_klien'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
-                  echo "<td>" . (isset($row['jadwal_sidang']) ? date('d-m-Y H:i', strtotime($row['jadwal_sidang'])) : '-') . "</td>";
-                  echo "<td>" . htmlspecialchars($row['peradilan'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
-                  echo "<td>" . htmlspecialchars($row['keterangan'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
-                  echo "</tr>";
+          while ($row = mysqli_fetch_assoc($result)) {
+            if ($current_perkara != $row['nama_perkara']) {
+              if ($current_perkara !== null) {
+                  echo "</tbody></table></div></div></div><br>";
               }
-              echo "</tbody></table>";
-          } else {
-              echo "<p class='text-center'>Tidak ada data perkara.</p>";
-          }
+              $current_perkara = $row['nama_perkara'];
 
-          $conn->close();
+              echo "<div class='card mb-4'>";
+              echo "<div class='card-body'>";
+              echo "<h5 class='card-title pb-2 fs-4'>" . htmlspecialchars($current_perkara, ENT_QUOTES, 'UTF-8') . "</h5>";
+              echo "<div class='table-responsive'>";
+              echo "<table class='table table-bordered'>
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Nomor Perkara</th>
+                        <th>Nama Klien</th>
+                        <th>Jadwal Sidang</th>
+                        <th>Peradilan</th>
+                        <th>Keterangan</th>
+                      </tr>
+                    </thead>
+                    <tbody>";
+                $no = 1;
+            }
+            echo "<tr>";
+            echo "<td>" . $no++ . "</td>";
+            echo "<td>" . htmlspecialchars($row['no_perkara'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
+            echo "<td>" . htmlspecialchars($row['nama_klien'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
+            echo "<td>" . (isset($row['jadwal_sidang']) ? date('d-m-Y H:i', strtotime($row['jadwal_sidang'])) : '-') . "</td>";
+            echo "<td>" . htmlspecialchars($row['peradilan'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
+            echo "<td>" . htmlspecialchars($row['keterangan'] ?? '-', ENT_QUOTES, 'UTF-8') . "</td>";
+            echo "</tr>";
+          }
+          echo "</tbody></table></div></div></div>";
+        } else {
+          echo "<p class='text-center'>Tidak ada data perkara.</p>";
+        }
+        $conn->close();
         ?>
       </div>
-    </div>
+    </div>   
   </main>
 
   <footer id="footer" class="footer">
     <div class="copyright">
       <strong><span>AgendaHukum</span></strong>
-      <p class="small">by Kelompok_8</p>
+      <p class="small">by Zaki_Anwar</p>
     </div>
   </footer>
 

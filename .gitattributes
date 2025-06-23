@@ -1,0 +1,29 @@
+# Atur semua file text agar Git mengelola EOL sesuai OS, tapi commit sebagai LF
+* text=auto
+
+# Laravel-specific: force LF untuk file utama
+*.php     text eol=lf
+*.js      text eol=lf
+*.css     text eol=lf
+*.scss    text eol=lf
+*.html    text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.xml     text eol=lf
+*.blade.php text eol=lf
+.env      text eol=lf
+
+# Binary files (jangan ubah EOL)
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.pdf     binary
+*.woff    binary
+*.woff2   binary
+*.ttf     binary
+*.eot     binary
+*.otf     binary

@@ -63,7 +63,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
   <main>
     <header id="header" class="header fixed-top d-flex align-items-center">
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="../index.php" class="logo d-flex align-items-center">
+          <img src="../assets/img/logo.jpg" alt="">
+          <h6 class="card-logo">LEMBAGA BANTUAN HUKUM<br>TARETAN LEGAL JUSTITIA</h6>
+        </a>
+      </div>
+    
+      <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+          
+          <li class="nav-item dropdown pe-3">
+              <i class="bi bi-list toggle-sidebar-btn"></i>
+          </li>
+        </ul>
+      </nav>
     </header>
 
     <aside id="sidebar" class="sidebar">

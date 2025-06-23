@@ -354,8 +354,17 @@ h6 {
 }
 
 .logo img {
-  max-height: 26px;
+  max-height: 50px;
   margin-right: 6px;
+  background: transparent;
+}
+
+.card-logo {
+  padding: 20px 0 15px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #012970;
+  font-family: "Poppins", sans-serif;
 }
 
 .logo span {

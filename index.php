@@ -32,18 +32,17 @@ if ($result && $result->num_rows > 0) {
 </head>
 <body>
   <header id="header" class="header fixed-top d-flex align-items-center">
-    <i class="bi bi-list toggle-sidebar-btn"></i>
-
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.php" class="logo d-flex align-items-center">
+        <img src="assets/img/logo1.jpg" alt="">
+        <h6 class="card-logo">LEMBAGA BANTUAN HUKUM<br>TARETAN LEGAL JUSTITIA</h6>
+      </a>
+    </div>
+    
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
-          <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) : ?>
-
-            <a class="dropdown-item d-flex align-items-center" href="auth/logout.php">
-              <i class="bi bi-box-arrow-right"></i>
-            </a>
-          <?php endif; ?>
-
+            <i class="bi bi-list toggle-sidebar-btn"></i>
         </li>
       </ul>
     </nav>
@@ -199,7 +198,7 @@ if ($result && $result->num_rows > 0) {
   <footer id="footer" class="footer">
     <div class="copyright">
       <strong><span>AgendaHukum</span></strong>
-      <p class="small">by Kelompok_8</p>
+      <p class="small">by Zaki_Anwar</p>
     </div>
   </footer>
   
